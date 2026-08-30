@@ -1,0 +1,100 @@
+.sessions-page {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+
+    background-color: #1d1d1d;
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+/*      BARS      */
+.bars{
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+    z-index: 0;
+
+    width: 100%
+}
+
+.session-bar{
+    position: absolute;
+    inset: 0 0 0 0;
+
+    background-color: rgba(210,210,210, 0.8);
+}
+
+.session-bar-left{
+    clip-path: polygon(
+        30% 0%,
+        55% 0,
+        45% 100%,
+        20% 100%
+    );
+
+    animation: bar-downwards-transformation 0.3s ease-out forwards;
+}
+
+.session-bar-right{
+    clip-path: polygon(
+        54.95% 0,
+        80% 0,
+        70% 100%,
+        44.95% 100%
+    );
+
+    animation: bar-upwards-transformation 0.3s ease-out forwards;
+}
+
+@keyframes bar-downwards-transformation {
+    from {
+        clip-path: polygon(
+            30% 0,
+            55% 0,
+            55% 0,
+            30% 0
+        );
+
+        opacity: 100%;
+    }
+
+    to{
+        clip-path: polygon(
+            30% 0%,
+            55% 0,
+            45% 100%,
+            20% 100%
+        );
+
+        opacity: 100%;
+    }
+}
+
+@keyframes bar-upwards-transformation {
+    from {
+        clip-path: polygon(
+            44.95% 110%,
+            70% 110%,
+            70% 110%,
+            44.95% 110%
+        );
+
+        opacity: 100%;
+    }
+
+    to{
+        clip-path: polygon(
+            54.95% 0,
+            80% 0,
+            70% 100%,
+            44.95% 100%
+        );
+
+        opacity: 100%;
+    }
+}

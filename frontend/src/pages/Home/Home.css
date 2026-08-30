@@ -1,0 +1,17 @@
+.home-page {
+  min-height: 100vh;
+  background: url('../../assets/images/landing-background.jpg')
+    center / cover no-repeat;
+}
+
+.home-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.home-title {
+  font-size: clamp(4rem, 12vw, 10rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}

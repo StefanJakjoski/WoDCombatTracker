@@ -1,0 +1,128 @@
+.sessions-content {
+    position: fixed;
+    inset: 0;
+
+    z-index: 10;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.sessions-grid {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2rem;
+
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+
+    margin-left: 50vw;
+
+    width: max-content;
+
+    /*transform: translateX(var(--diagonal-x, 0px));*/
+    transform: translateX(calc(-50% + var(--diagonal-x, 0px)));
+}
+
+.session-row {
+    display: flex;
+    gap: 2rem;
+
+    transform: translateX(
+        calc(var(--row) * -30vh * 0.16)
+    );
+}
+
+
+.session-card {
+    position: relative;
+
+    width: 30vh;
+
+    aspect-ratio: 16 / 10;
+
+    overflow: hidden;
+
+    padding: 0;
+
+    cursor: pointer;
+}
+
+.session-card-image {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 0;
+
+    object-fit: cover;
+
+    transition: transform 0.4s ease;
+}
+
+.session-card:hover .session-card-image {
+    transform: scale(1.05);
+}
+
+.session-card::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: 1;
+
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.5) 30%,
+        transparent 65%
+    );
+
+    pointer-events: none;
+}
+
+.session-card-title {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+
+    z-index: 2;
+
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+
+
+.sessions-scroll {
+    position: absolute;
+    inset: 0;
+
+    overflow: auto;
+
+    pointer-events: auto;
+
+    scrollbar-width: none;
+}
+
+.sessions-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+
+/*
+ * The scroll content needs enough room in BOTH directions
+ * because the scrolling movement is diagonal.
+ */
+.sessions-grid::after {
+    content: "";
+    display: block;
+
+    width: 1px;
+}

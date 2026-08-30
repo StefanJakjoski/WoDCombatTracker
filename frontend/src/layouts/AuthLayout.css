@@ -1,0 +1,118 @@
+.auth-page {
+    position: relative;
+    min-height: 100vh;
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    background-color: black;
+
+    overflow: hidden;
+}
+
+.auth-panel {
+    position: fixed;
+    inset: 0 auto 0 0;
+
+    width: 40%;
+    min-height: 100vh;
+
+    background: rgba(255, 255, 255, 0.70);
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        82% 100%,
+        0 100%
+    );
+
+    animation: polygon-downwards-transformation 0.3s ease-out forwards;
+
+    /*
+     * Left edge of the panel:
+     * 0% 0%     = top-left
+     * 100% 0%   = top-right
+     * 82% 100%  = bottom-right
+     * 0% 100%   = bottom-left
+     */
+
+    display: flex;
+    align-items: center;
+}
+
+@keyframes polygon-upwards-transformation {
+    from {
+        clip-path: polygon(
+            0   110%,
+            82% 110%,
+            82% 110%,
+            0   110%
+        );
+
+        opacity: 0%;
+    }
+
+    to{
+        clip-path: polygon(
+            0 0,
+            100% 0,
+            82% 100%,
+            0 100%
+        );
+
+        opacity: 100%;
+    }
+}
+
+@keyframes polygon-downwards-transformation {
+    from {
+        clip-path: polygon(
+            0 0,
+            100% 0,
+            100% 0,
+            0 0
+        );
+
+        opacity: 0%;
+    }
+
+    to{
+        clip-path: polygon(
+            0 0,
+            100% 0,
+            82% 100%,
+            0 100%
+        );
+
+        opacity: 100%;
+    }
+}
+
+.auth-content {
+    width: 100%;
+    max-width: 500px;
+
+    margin-left: 5rem;
+    margin-right: 8rem;
+}
+
+@media (max-width: 768px) {
+    .auth-panel {
+        position: relative;
+
+        width: 100%;
+        min-height: 100vh;
+
+        clip-path: none;
+
+        background: rgba(255, 255, 255, 0.92);
+    }
+
+    .auth-content {
+        max-width: 550px;
+
+        margin: 0 auto;
+        padding: 3rem 1.5rem;
+    }
+}

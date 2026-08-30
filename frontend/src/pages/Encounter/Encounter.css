@@ -1,0 +1,23 @@
+.encounter-page {
+  min-height: 100vh;
+  background: url('../../assets/images/background2.jpg') center / cover no-repeat;
+}
+
+
+.encounter-title {
+    color: brown;
+}
+
+.turn-descriptor {
+    opacity: 0;
+    transform: translateX(-8px);
+
+    transition:
+      opacity   200ms ease,
+      transform 200ms ease;
+}
+
+.turn-descriptor.active {
+    opacity: 1;
+    transform: translateX(0);
+}

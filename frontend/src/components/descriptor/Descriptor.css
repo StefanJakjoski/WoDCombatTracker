@@ -1,0 +1,157 @@
+.descriptor-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 0.35rem;
+
+    width: 100%;
+}
+
+.descriptor-separator {
+    color: #ffc107;
+    font-size: 0.4rem;
+    opacity: 0.65;
+
+    user-select: none;
+}
+
+
+.descriptor-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+}
+
+.descriptor-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background: transparent;
+    border: none;
+    outline: none;
+
+    padding: 0;
+    margin: 0;
+
+    color: #f8f9fa;
+    font-family: inherit;
+    font-size: inherit;
+
+    cursor: pointer;
+
+    /* Don't stretch the actual select */
+    width: auto;
+
+    text-align: center;
+}
+
+.descriptor-select:hover,
+.descriptor-select:focus {
+    color: #ffc107;
+}
+
+.descriptor-select option {
+    background-color: #212529;
+    color: #f8f9fa;
+}
+
+.descriptor-dropdown {
+    position: relative;
+    display: inline-block;
+
+    z-index: 1000;
+}
+
+/* The thing that looks like ordinary text */
+.descriptor-button {
+    appearance: none;
+    border: none;
+    background: transparent;
+
+    color: #f8f9fa;
+
+    padding: 0;
+    margin: 0;
+
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+.descriptor-button:hover {
+    color: #ffc107;
+}
+
+.descriptor-dropdown.open .descriptor-button {
+    color: #ffc107;
+    z-index: 1000;
+}
+
+
+/* Dropdown menu */
+.descriptor-menu {
+    position: absolute;
+
+    top: calc(100% + 0.4rem);
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: 1000;
+
+    min-width: max-content;
+
+    padding: 0.25rem;
+
+    background: #17191c;
+    border: 1px solid rgba(255, 193, 7, 0.5);
+    border-radius: 0.25rem;
+
+    box-shadow:
+        0 0.5rem 1rem rgba(0, 0, 0, 0.5),
+        0 0 0.5rem rgba(255, 193, 7, 0.1);
+}
+
+
+/* Individual options */
+.descriptor-option {
+    display: block;
+
+    width: 100%;
+
+    border: none;
+    background: transparent;
+
+    color: #f8f9fa;
+
+    text-align: left;
+
+    padding: 0.3rem 0.75rem;
+
+    font-family: inherit;
+    font-size: inherit;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.descriptor-option:hover {
+    background: #ffc107;
+    color: #212529;
+}
+
+.descriptor-option.selected {
+    color: #ffc107;
+}
+
+.descriptor-option.selected:hover {
+    color: #212529;
+}
