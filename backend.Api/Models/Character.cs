@@ -146,11 +146,11 @@ public class HealthTrack
         }
 
         //no empty boxes, upgrade the last bashing to lethal
-        int lastBash = Last(DamageType.Bashing);
+        int firstBash = First(DamageType.Bashing);
 
-        if (lastBash != -1)
+        if (firstBash != -1)
         {
-            Levels[lastBash] = DamageType.Lethal;
+            Levels[firstBash] = DamageType.Lethal;
             return;
         }
 
@@ -160,6 +160,25 @@ public class HealthTrack
 
     private void ApplyLethal()
     {
+        int firstBash = First(DamageType.Bashing);
+        if(firstBash != -1)
+        {
+            ShiftRight(firstBash);
+            Levels[firstBash] = DamageType.Lethal;
+            return;
+        }
+
+        int empty = First(DamageType.None);
+
+        if (empty != -1)
+        {
+            Levels[empty] = DamageType.Lethal;
+            return;
+        }
+
+        ApplyAggravated();
+
+        /*
         int empty = First(DamageType.None);
 
         if (empty != -1)
@@ -169,17 +188,18 @@ public class HealthTrack
             return;
         }
 
-        int lastBash = Last(DamageType.Bashing);
+        int firstBash = First(DamageType.Bashing);
 
-        if (lastBash != -1)
+        if (firstBash != -1)
         {
-            ShiftRight(lastBash);
-            Levels[lastBash] = DamageType.Lethal;
+            ShiftRight(firstBash);
+            Levels[firstBash] = DamageType.Lethal;
             return;
         }
 
         //all lethal/aggravated
         ApplyAggravated();
+        */
     }
 
     private void ApplyAggravated()
