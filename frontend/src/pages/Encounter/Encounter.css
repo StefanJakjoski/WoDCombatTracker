@@ -21,3 +21,9 @@
     opacity: 1;
     transform: translateX(0);
 }
+
+.descriptor-input{
+    width: 2rem !important;
+    text-align: center;
+    background-color: #444;
+}

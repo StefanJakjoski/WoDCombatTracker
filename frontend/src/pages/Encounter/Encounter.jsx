@@ -1,21 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteSessionById, getSessionById, updateSessionById } from "../../services/sessionService";
 import { CharacterType, createCharacter, deleteCharacterById, deleteCharactersBySessionId, getCharactersBySessionId, updateCharacterById } from "../../services/characterService";
 import CharacterCombatCard from "../../components/characterCards/CharacterCard";
+import { motion, AnimatePresence } from "motion/react"
 
 import "./Encounter.css"
 
 /*
-Phase description: 0 - initiative roll/random assignment, 1 - action declaration, 2 - taking actions 
+Phase description:  0 - initiative roll/random assignment | no sorting, 
+                    1 - action declaration | sort from lowest to highest init, 
+                    2 - taking actions | sort from highest to lowest init 
 */
 
-function TurnDescriptor({isActive, phase, assignInit, character, randomizeInitiative}){
+function TurnDescriptor({isActive, phase, assignInit, character, randomizeInitiative, setTurn}){
+    const inputRef = useRef(null);  //assigned to input
+    
+    useEffect(() => {       //automatically select inputRef if isActive
+        if(isActive){   
+            inputRef.current?.focus();
+            inputRef.current?.select();
+        }
+    }, [isActive]);
+
     var descriptor = ''
     switch(phase % 3){
         case 0:
             descriptor = randomizeInitiative ? `Total rolled: ${character.combatStats.currentInitiative}` 
-                : 'Assign total initiative \n(or leave empty for random roll)';
+                : 'Assign total initiative \n(or leave empty for random roll): ';
             break;
         case 1:
             descriptor = 'To declare action.';
@@ -35,29 +47,44 @@ function TurnDescriptor({isActive, phase, assignInit, character, randomizeInitia
     const showDescriptor = isActive || (randomizeInitiative && phase % 3 == 0);
 
     return(
-        <div className={`text-light m-0 border border-danger p-2 rounded bg-black turn-descriptor
-            ${showDescriptor ? 'active' : 'inactive'}`}>
-                {descriptor}
-                {phase%3 == 0 && !randomizeInitiative && (
-                    <input 
-                        type="text"
-                        inputMode="numeric"
-                        className="small text-light input-transparent input-limited stat col-auto"
-                        maxLength={2}
-                        pattern="[0-9]{0,2}"
-                        defaultValue={currentInitiative}
-                        name="currentInitiative"
-                        onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, "").slice(0, 2);
-                            currentInitiative = value;
-                        }}
-                        onBlur={(e) => {
-                            const value = currentInitiative === "" ? (character.combatStats.baseInitiative + RollD10()) : Number(currentInitiative);
-                            assignInit(character, value);
-                        }}
-                        onKeyDown={(e) => { if(e.key === "Enter"){ e.currentTarget.blur(); } }}
-                    />
+        <div className="align-items-center">
+            <div className={`text-light m-0 border border-danger p-2 rounded bg-black turn-descriptor
+                ${showDescriptor ? 'active' : 'inactive'}`}>
+                    {descriptor}
+                    {phase%3 == 0 && !randomizeInitiative && (
+                        <input 
+                            type="text"
+                            inputMode="numeric"
+                            className="small text-light input-transparent input-limited descriptor-input col-auto rounded"
+                            maxLength={2}
+                            pattern="[0-9]{0,2}"
+                            defaultValue={currentInitiative}
+                            ref={inputRef}
+                            name="currentInitiative"
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/\D/g, "").slice(0, 2);
+                                currentInitiative = value;
+                            }}
+                            onBlur={(e) => {
+                                const value = currentInitiative === "" ? (character.combatStats.baseInitiative + RollD10()) : Number(currentInitiative);
+                                assignInit(character, value);
+                            }}
+                            onKeyDown={(e) => { if(e.key === "Enter"){ 
+                                e.currentTarget.blur(); 
+                                setTurn(prev => prev + 1);
+                            }}}
+                        />
+                    )}
+            </div>
+
+            <div className={`turn-descriptor ${isActive ? 'active' : 'inactive'}`}>
+                { phase % 3 == 0 && !randomizeInitiative && (
+                    <button className={`btn bg-dark text-light m-2`} 
+                        onClick={() => setTurn(prev => prev+1)}>
+                            Advance Turn
+                    </button>
                 )}
+            </div>
         </div>
     )   
 }
@@ -204,12 +231,12 @@ function Encounter(){
         //    return;
 
 
-        if(phase % 3 == 0 || phase % 3 == 1)
+        if(phase % 3 == 1)
             setCharacters(characters.sort((a, b) => 
                 (a.combatStats.currentInitiative - b.combatStats.currentInitiative) 
                 + (a.combatStats.currentInitiative - b.combatStats.currentInitiative == 0)
                 * (a.combatStats.baseInitiative - b.combatStats.baseInitiative)));
-        else
+        else if(phase % 3 == 2)
             setCharacters(characters.sort((a, b) => 
                 (b.combatStats.currentInitiative - a.combatStats.currentInitiative) 
                 + (b.combatStats.currentInitiative - a.combatStats.currentInitiative == 0)
@@ -242,6 +269,7 @@ function Encounter(){
     }
 
     function handlePhase(){
+        console.log('handling phase')
         if(phase%3 == 0 && randomizeInitiative){
             setButtonEnabled(false);
             setCharacters(prev => prev.map(c => {
@@ -254,7 +282,11 @@ function Encounter(){
 
             //console.log('handle phase');
             setTimeout(() => {
-                setPhase(prev => prev + 1);
+                console.log('incrementing phase')
+                setPhase(prev => {
+                    console.log(prev);
+                    return prev + 1;
+                });
                 setButtonEnabled(true);
             }, 3000)
             
@@ -340,12 +372,12 @@ function Encounter(){
     useEffect(() => {       //id and init
         fetchSession(id);
         fetchCharactersBySessionId(id);
-        setHandlingPhase(true);
+        //setHandlingPhase(true);
     }, [id]);
 
     useEffect(() => sortCharacters(), [charactersSorted, phase])
 
-    useEffect(() => handlePhase(), [phase]);
+    useEffect(() => handlePhase(), [phase, randomizeInitiative]);
 
     useEffect(() => {
         nextTurn();
@@ -364,7 +396,7 @@ function Encounter(){
     //debugging
     //useEffect(() => console.log(currentSession), [currentSession]);
     //useEffect(() => console.log(characters), [characters]);
-    //useEffect(() => console.log('phase transition'), [phase]);
+    useEffect(() => console.log('phase transition', phase), [phase]);
 
 
     /****************************************************************
@@ -429,6 +461,7 @@ function Encounter(){
                     type="checkbox"
                     checked={randomizeInitiative}
                     onChange={(e) => setRandomizeInitiative(e.target.checked)}
+                    disabled={!buttonEnabled}
                 />
                 Randomize Initiative
             </label>
@@ -436,7 +469,11 @@ function Encounter(){
 
             <div className="m-4">
                 {characters.map((character) => (
-                    <div className="d-flex" key={character.id}>
+                    <motion.div className="d-flex" key={character.id}
+                        layout
+                        transition={{
+                            layout: { duration: 0.3, ease: "easeInOut" }
+                        }}>
                         <div className="">
                             <CharacterCombatCard 
                                 character={character}                                
@@ -453,9 +490,10 @@ function Encounter(){
 
                         <div className="p-4 d-flex align-items-center">
                             <TurnDescriptor isActive={character.combatStats.isActive ?? false} phase={phase}
-                                assignInit={assignInit} character={character} randomizeInitiative={randomizeInitiative}/>
+                                assignInit={assignInit} character={character} randomizeInitiative={randomizeInitiative}
+                                setTurn={setTurn}/>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
             
