@@ -10,11 +10,12 @@ import "./Encounter.css"
 Phase description: 0 - initiative roll/random assignment, 1 - action declaration, 2 - taking actions 
 */
 
-function TurnDescriptor({isActive, phase, assignInit, character}){
+function TurnDescriptor({isActive, phase, assignInit, character, randomizeInitiative}){
     var descriptor = ''
     switch(phase % 3){
         case 0:
-            descriptor = 'Assign total initiative \n(or leave empty for random roll)';
+            descriptor = randomizeInitiative ? `Total rolled: ${character.combatStats.currentInitiative}` 
+                : 'Assign total initiative \n(or leave empty for random roll)';
             break;
         case 1:
             descriptor = 'To declare action.';
@@ -31,12 +32,13 @@ function TurnDescriptor({isActive, phase, assignInit, character}){
     //    descriptor='';
 
     var currentInitiative = character.combatStats.currentInitiative;
+    const showDescriptor = isActive || (randomizeInitiative && phase % 3 == 0);
 
     return(
         <div className={`text-light m-0 border border-danger p-2 rounded bg-black turn-descriptor
-            ${isActive ? 'active' : 'inactive'}`}>
+            ${showDescriptor ? 'active' : 'inactive'}`}>
                 {descriptor}
-                {phase%3 == 0 && (
+                {phase%3 == 0 && !randomizeInitiative && (
                     <input 
                         type="text"
                         inputMode="numeric"
@@ -75,6 +77,7 @@ function Encounter(){
     const [currentSession, setCurrentSession] = useState(null);
     const [characters, setCharacters] = useState([]);
     const [charactersSorted, setCharactersSorted] = useState(true);
+    const [buttonEnabled, setButtonEnabled] = useState(true);
 
     //title
     const [tempTitle, setTempTitle] = useState('Encounter');
@@ -83,6 +86,7 @@ function Encounter(){
     const [adjustingTurn, setAdjustingTurn] = useState(false);
     const [turn, setTurn] = useState(0);
     const [phase, setPhase] = useState(0);
+    const [handlingPhase, setHandlingPhase] = useState(false);
     const [randomizeInitiative, setRandomizeInitiative] = useState(true);
 
     //for deletion
@@ -196,8 +200,8 @@ function Encounter(){
     }
 
     function sortCharacters(){
-        if(charactersSorted || characters.length == 0)
-            return;
+        //if(charactersSorted || characters.length == 0)
+        //    return;
 
 
         if(phase % 3 == 0 || phase % 3 == 1)
@@ -229,8 +233,9 @@ function Encounter(){
         if(turn >= characters.length){
             console.log('next turn');
             setPhase(prev => prev + 1);
+            setHandlingPhase(true);
             setTurn(0);
-            setCharactersSorted(false);
+            //setCharactersSorted(false);
         }
 
         setAdjustingTurn(true);
@@ -238,6 +243,7 @@ function Encounter(){
 
     function handlePhase(){
         if(phase%3 == 0 && randomizeInitiative){
+            setButtonEnabled(false);
             setCharacters(prev => prev.map(c => {
                 const newInitiative = c.combatStats.baseInitiative + RollD10();
                 const updatedCharacter = {...c, combatStats: {...c.combatStats, currentInitiative: newInitiative}}
@@ -246,10 +252,16 @@ function Encounter(){
                 return updatedCharacter;
             }));
 
-            console.log('handle phase');
-            setPhase(prev => prev + 1);
+            //console.log('handle phase');
+            setTimeout(() => {
+                setPhase(prev => prev + 1);
+                setButtonEnabled(true);
+            }, 3000)
+            
             //setTurn(0);
         }
+
+        setHandlingPhase(false);
     }
 
     function adjustActiveStatus(){
@@ -328,19 +340,21 @@ function Encounter(){
     useEffect(() => {       //id and init
         fetchSession(id);
         fetchCharactersBySessionId(id);
+        setHandlingPhase(true);
     }, [id]);
 
-    useEffect(() => sortCharacters(), [charactersSorted])
+    useEffect(() => sortCharacters(), [charactersSorted, phase])
+
+    useEffect(() => handlePhase(), [phase]);
 
     useEffect(() => {
-        handlePhase();
         nextTurn();
         adjustActiveStatus();
     }, [turn])
 
+
     useEffect(() => adjustActiveStatus(), [adjustingTurn])
     useEffect(() => updateSessionInBackend(), [updatingSession]);
-    useEffect(() => console.log('phase transition'), [phase])
 
     //session deletion pipeline
     //useEffect(() => deleteAllCharacters(id), [sessionMarkedForDeletion]);
@@ -350,6 +364,7 @@ function Encounter(){
     //debugging
     //useEffect(() => console.log(currentSession), [currentSession]);
     //useEffect(() => console.log(characters), [characters]);
+    //useEffect(() => console.log('phase transition'), [phase]);
 
 
     /****************************************************************
@@ -404,6 +419,7 @@ function Encounter(){
             <button 
                 className="btn btn-outline-primary" 
                 onClick={() => setTurn(turn+1)}
+                disabled={!buttonEnabled}
             >
                 Turn {turn}
             </button>
@@ -437,7 +453,7 @@ function Encounter(){
 
                         <div className="p-4 d-flex align-items-center">
                             <TurnDescriptor isActive={character.combatStats.isActive ?? false} phase={phase}
-                                assignInit={assignInit} character={character}/>
+                                assignInit={assignInit} character={character} randomizeInitiative={randomizeInitiative}/>
                         </div>
                     </div>
                 ))}
