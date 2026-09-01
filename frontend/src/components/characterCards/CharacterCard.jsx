@@ -5,6 +5,7 @@ import "./CharacterCard.css";
 import wwplaceholder from '../../assets/icons/wwplaceholder.png'
 import Descriptor from "../descriptor/Descriptor";
 import { CharacterType, Damage, DamageType, dealDamageToCharacterById, healDamageToCharacterById } from "../../services/characterService";
+import PortraitSelector from "../portraitSelector/PortraitSelector";
 
 //import PortraitSelector from "./PortraitSelector";
 
@@ -282,6 +283,7 @@ export default function CharacterCombatCard({
             ${descriptorOpen ? "dropdown-open" : ""}`}>
 
             {/*Portrait*/}
+            {/*
             <div className="col-1 portrait">
                 <div className="portrait-image">
                     <img
@@ -290,6 +292,10 @@ export default function CharacterCombatCard({
                     />
                     <div className="portrait-fade" />
                 </div>
+            </div>
+            */}
+            <div className="col-1 portrait">
+                <PortraitSelector character={character} onCharacterChanged={onCharacterChanged}/>
             </div>
 
             {/*Name and Descriptor*/}

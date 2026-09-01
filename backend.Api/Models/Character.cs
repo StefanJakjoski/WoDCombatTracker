@@ -368,6 +368,8 @@ public class Character{
     // pc, npc, ally, enemy, etc...
     public string Category { get; set; } = "";
 
+    public string PortraitName { get; set; } = "wwplaceholder.png";
+
     public HealthTrack Health { get; set; } = new();      // [A, L, L, B, B, [], []]  agg, lethal, bashing, nothing
 
     public ResourceTrack Willpower { get; set; } = new();
@@ -425,6 +427,7 @@ public class CharacterCreateDto
     public string Name { get; set; } = "";
     public string CharacterType { get; set; } = "";
     public string Category { get; set; } = "";
+    public string PortraitName { get; set; } = "wwplaceholder.png";
 
     //public HealthTrack Health { get; set; } = new();
     public int Willpower { get; set; } = 0;
