@@ -426,7 +426,7 @@ function Encounter(){
     * HTML AND RETURN
     ****************************************************************/
     return(
-        <main className="encounter-page"
+        <main className="encounter-page px-4 py-2"
             style={{
                 minHeight: '100vh', 
                 background: `url("${backgrounds[selectedImage]}") center / cover no-repeat`,
@@ -436,8 +436,8 @@ function Encounter(){
             <div className="encounter-title wod-heading">
                 <input
                     type="text"
-                    className="fs-3 fw-bold text-light input-transparent 
-                        input-limited text-uppercase f-aldrich-regular my-1"
+                    className="fs-2 fw-bold text-light input-transparent 
+                        input-limited text-uppercase f-aldrich-regular my-3"
                     value={tempTitle}
                     name="name"
                     onChange={(e) => setTempTitle(e.target.value)}
@@ -446,12 +446,11 @@ function Encounter(){
                 />
             </div>
 
-            <h1 className="encounter-title">{ id ? id : "Hello" }</h1>
-
+            {/*<h1 className="encounter-title">{ id ? id : "Hello" }</h1>*/}
 
             <div className="row">
                 {/*Character View*/}
-                <div className="col-8">
+                <div className="col-9">
 
                     {/*Characters*/}
                     <div className="m-2">
@@ -537,7 +536,7 @@ function Encounter(){
 
 
                 {/*Other settings/options*/}
-                <div className="col-4 alt-segment sticky-top align-self-start pt-3">
+                <div className="col-3 alt-segment sticky-top align-self-start pt-3">
                     <div className="d-flex gap-2">
                         <label className="btn btn wod-button initiative-checkbox mb-2">
                             <input
