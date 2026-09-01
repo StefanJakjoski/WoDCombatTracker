@@ -12,6 +12,12 @@ export async function getSessionById(id){
     return response.data;
 }
 
+export async function getSessionByUserId(){
+    const response = await sessionApi.getSessionByUserId();
+
+    return response.data;
+}
+
 export async function createSession(name, allowedUserIds){
     const response = await sessionApi.createSession({ name, allowedUserIds });
 

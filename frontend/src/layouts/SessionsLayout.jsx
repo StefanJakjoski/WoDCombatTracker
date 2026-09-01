@@ -28,6 +28,7 @@ function SessionsLayout({ SessionsArray, onSessionSelect }){
 
         // Each row moves 3vh horizontally
         const rowOffsetX = window.innerHeight * 0.048;
+        //const rowOffsetX = window.innerHeight * 0.040;
 
         const diagonalSlope = rowOffsetX / rowPitch;
 
@@ -50,10 +51,14 @@ function SessionsLayout({ SessionsArray, onSessionSelect }){
         if(scrollRef.current){
             handleScroll({ currentTarget: scrollRef.current });
         }
-    }, []);
+    }, [SessionsArray]);
 
     return(
         <div className={`sessions-content `}>
+            <div className="d-flex sessions-header">
+                <h1 className="wod-heading text-danger">Your Sessions</h1>
+            </div>
+            
             <div className="sessions-scroll" ref={scrollRef} onScroll={handleScroll}>
                 <div className="sessions-grid">
                     {Array.from(
@@ -80,7 +85,7 @@ function SessionsLayout({ SessionsArray, onSessionSelect }){
                                                 alt={session.name}
                                             />
 
-                                            <div className="session-card-title">
+                                            <div className="session-card-title wod-heading">
                                                 {session.name}
                                             </div>
                                         </div>

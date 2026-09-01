@@ -109,3 +109,7 @@ body {
     opacity: 0.6;
 }
 
+.wod-border{
+    border-radius: 0;
+    border: 1px solid #6e0000;
+}

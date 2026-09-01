@@ -5,7 +5,9 @@ import background from '../../assets/images/background2.jpg'
 import './Sessions.css'
 import SessionsLayout from "../../layouts/SessionsLayout";
 import { useNavigate } from "react-router-dom";
-import { createSession, getAllSessions } from "../../services/sessionService";
+import { createSession, getAllSessions, getSessionByUserId } from "../../services/sessionService";
+import { getToken, setToken } from "../../services/authService";
+import NotLoggedInDisplay from "../../components/notLoggedIn/NotLoggedInDisplay";
 
 var templateSessions = [
     {
@@ -18,13 +20,8 @@ var templateSessions = [
 
 function Sessions(){
 
-    /*
-    for(var i = 6; i < 30; i++){
-        templateSessions.push({id: i, title: "TEST" });
-    }
-    */
-   
-    
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [token, setToken] = useState(null);
 
     const [started, setStarted] = useState(false);
     const [loaded, setLoaded] = useState(false);
@@ -53,18 +50,30 @@ function Sessions(){
     * HOOKS AND DEBUGGING
     ****************************************************************/
     useEffect(() => {
+        const token = getToken();
+        console.log(token);
+        if(token != null){
+            setToken(token);
+            setIsLoggedIn(true);
+        }    
+    }, [])
+
+    useEffect(() => {
+        if(token == null)
+            return;
+
         const timer = setTimeout(() => {
             setStarted(true);
         }, animationDelayMs);
 
         async function fetchSessions(){
-            const sessions = await getAllSessions();
+            const sessions = await getSessionByUserId();
             //console.log(sessions);
             setSessions(sessions);
         }
 
         fetchSessions();
-    }, []);
+    }, [token]);
 
     const sessionsArray = [
         ...templateSessions,
@@ -85,6 +94,10 @@ function Sessions(){
 
             {started && (
                 <SessionsLayout SessionsArray={sessionsArray} onSessionSelect={SelectSession} />
+            )}
+
+            {(token == null) && (
+                <NotLoggedInDisplay />
             )}
             
 

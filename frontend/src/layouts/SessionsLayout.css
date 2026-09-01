@@ -9,6 +9,17 @@
     pointer-events: none;
 }
 
+.sessions-header {
+    position: absolute;
+    left: 55%;
+    transform: translateX(-50%);
+    width: 400px;
+    text-align: center;
+    justify-content: center;
+}
+
+
+
 .sessions-grid {
     display: flex;
     flex-direction: column;
@@ -90,12 +101,19 @@
     position: absolute;
     left: 1rem;
     bottom: 1rem;
+    right: 1rem;
 
     z-index: 2;
 
     color: white;
     font-size: 1.2rem;
     font-weight: 600;
+    
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    text-align: left;
 }
 
 

@@ -32,6 +32,16 @@ public class SessionController(SessionService service) : ControllerBase
         return Ok(session);
     }
 
+    [HttpGet("user")]
+    public async Task<ActionResult<List<Session>>> GetByUserId()
+    {
+        var sessions = await _service.GetByUserIdAsync();
+        if(sessions.Count == 0)
+            return NoContent();
+
+        return Ok(sessions);
+    }
+
     [HttpPost]
     public async Task<ActionResult<Session?>> Create(SessionRequestDto request)
     {

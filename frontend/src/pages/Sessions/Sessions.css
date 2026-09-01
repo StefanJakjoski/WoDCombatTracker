@@ -10,6 +10,10 @@
     background-repeat: no-repeat;
 }
 
+.error-text{
+    z-index: 1;
+}
+
 
 /*      BARS      */
 .bars{

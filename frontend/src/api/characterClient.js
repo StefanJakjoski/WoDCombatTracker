@@ -21,6 +21,7 @@ export function createMortalCharacter(request){
 }
 
 export function updateCharacterById(id, request){
+    console.log(request);
     return axiosClient.put(`/character/${id}`, request);
 }
 

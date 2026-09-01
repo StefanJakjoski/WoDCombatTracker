@@ -129,6 +129,7 @@ function Encounter(){
     const [randomizeInitiative, setRandomizeInitiative] = useState(true);
 
     //for deletion
+    const [markCharactersForDeletion, setMarkCharactersForDeletion] = useState(false);
     const [sessionMarkedForDeletion, setSessionMarkedForDeletion] = useState(false);
     const [charactersDeleted, setCharactersDeleted] = useState(false);
     const [sessionDeleted, setSessionDeleted] = useState(false);
@@ -187,8 +188,8 @@ function Encounter(){
         setCharactersSorted(false);
     }
 
-    async function deleteAllCharacters(sessionId){
-        if(sessionId == null)
+    async function deleteAllCharacters(sessionId = id){
+        if(sessionId == null || (!markCharactersForDeletion && !sessionMarkedForDeletion))
             return;
 
         //add character deletion call logic
@@ -199,12 +200,13 @@ function Encounter(){
         }
         
         //currentSession = response.data;
+        setMarkCharactersForDeletion(false);
         setCharactersDeleted(true);
         setCharacters([]);
     }
 
     async function deleteSession(sessionId){
-        if(sessionId == null || !charactersDeleted)
+        if(sessionId == null || !charactersDeleted || !sessionMarkedForDeletion)
             return;
 
         //add character deletion call logic
@@ -219,17 +221,17 @@ function Encounter(){
     }
 
     async function createNewCharacter(request){
-        console.log(request);
+        //console.log(request);
         if(request == null)
             return;
 
         const response = await createCharacter(request);
-        console.log('From backend', response);
+        //console.log('From backend', response);
         if(response == null)
             return;
 
-        const updatedResponse = { ...response, type: response.characterType }
-        console.log('updated response', updatedResponse);
+        const updatedResponse = { type: response.characterType, ...response }
+        //console.log('updated response', updatedResponse);
         
         //currentSession = response.data;
         setCharacters(previousCharacters => [...previousCharacters, updatedResponse]);
@@ -278,7 +280,7 @@ function Encounter(){
         }
         
         if(turn >= characters.length){
-            console.log('next turn');
+            //console.log('next turn');
             setPhase(prev => prev + 1);
             setHandlingPhase(true);
             setTurn(0);
@@ -289,7 +291,7 @@ function Encounter(){
     }
 
     function handlePhase(){
-        console.log('handling phase')
+        //console.log('handling phase')
         if(phase%3 == 0 && randomizeInitiative){
             setButtonEnabled(false);
             setCharacters(prev => prev.map(c => {
@@ -302,7 +304,7 @@ function Encounter(){
 
             //console.log('handle phase');
             setTimeout(() => {
-                console.log('incrementing phase')
+                //console.log('incrementing phase')
                 setPhase(prev => {
                     console.log(prev);
                     return prev + 1;
@@ -341,7 +343,7 @@ function Encounter(){
             const newCharacters = prev.filter(character => character.id !== id);
             const newActiveIndex = (deletedIndex <= activeIndex) ? Math.max(0, activeIndex - 1) : activeIndex;
 
-            console.log(`activeIndex: ${activeIndex}, deletedIndex: ${deletedIndex}, newActiveIndex: ${newActiveIndex}`);
+            //console.log(`activeIndex: ${activeIndex}, deletedIndex: ${deletedIndex}, newActiveIndex: ${newActiveIndex}`);
 
             return newCharacters.map((character, i) => ({
                 ...character, combatStats: {...character.combatStats, isActive: i == newActiveIndex }
@@ -371,6 +373,7 @@ function Encounter(){
     ****************************************************************/
 
     function onCharacterChanged(updatedCharacter){
+        //console.log('updated character (encounter):', updatedCharacter);
         setCharacters(prev =>
             prev.map(character =>
                 character.id == updatedCharacter.id
@@ -409,14 +412,14 @@ function Encounter(){
     useEffect(() => updateSessionInBackend(), [updatingSession]);
 
     //session deletion pipeline
-    //useEffect(() => deleteAllCharacters(id), [sessionMarkedForDeletion]);
-    //useEffect(() => deleteSession(id), [charactersDeleted]);
-    //useEffect(() => navigate('/sessions'), [sessionDeleted]);
+    useEffect(() => {deleteAllCharacters(id);}, [sessionMarkedForDeletion, markCharactersForDeletion]);
+    useEffect(() => {deleteSession(id);}, [charactersDeleted]);
+    useEffect(() => {if(sessionDeleted){ navigate('/sessions'); }}, [sessionDeleted]);
 
     //debugging
     //useEffect(() => console.log(currentSession), [currentSession]);
     //useEffect(() => console.log(characters), [characters]);
-    useEffect(() => console.log('phase transition', phase), [phase]);
+    //useEffect(() => console.log('phase transition', phase), [phase]);
 
 
     /****************************************************************
@@ -450,58 +453,8 @@ function Encounter(){
                 {/*Character View*/}
                 <div className="col-8">
 
-                    {/*Debug buttons (copy and paste/remake elsewhere later*/}
-                    <button 
-                        className="wod-button p-2" 
-                        onClick={() => createNewCharacter({
-                            sessionId: id, type: CharacterType.Werewolf,
-                            rage: 5, gnosis: 5, willpower: 5, name: "Lost Soul",
-                            breed: 'Homid', auspice: 'Ahroun', tribe: 'Bonegnawers',
-                            soak: 5, initiative: 5, dodge: 9,
-                            gifts: ['small penis', 'medium penis', 'large penis']
-                        })}
-                    >
-                        CREATE WEREWOLF TEST
-                    </button>
-
-                    <button 
-                        className="btn btn-primary" 
-                        onClick={() => createNewCharacter({
-                            sessionId: id, type: CharacterType.Mortal,
-                            willpower: 10, name: "Lost Soul"
-                        })}
-                    >
-                        CREATE MORTAL TEST
-                    </button>
-
-                    <button 
-                        className="btn btn-danger" 
-                        onClick={() => deleteAllCharacters(id)}
-                    >
-                        Delete all characters
-                    </button>
-
-                    <button 
-                        className="btn btn-outline-primary" 
-                        onClick={() => setTurn(turn+1)}
-                        disabled={!buttonEnabled}
-                    >
-                        Turn {turn}
-                    </button>
-
-                    <label className="small text-light">
-                        <input
-                            type="checkbox"
-                            checked={randomizeInitiative}
-                            onChange={(e) => setRandomizeInitiative(e.target.checked)}
-                            disabled={!buttonEnabled}
-                        />
-                        Randomize Initiative
-                    </label>
-
-
                     {/*Characters*/}
-                    <div className="m-4">
+                    <div className="m-2">
                         {characters.map((character) => (
                             <motion.div className="d-flex" key={character.id}
                                 layout
@@ -561,8 +514,52 @@ function Encounter(){
 
 
                 {/*Other settings/options*/}
-                <div className="col-4">
+                <div className="col-4 alt-segment sticky-top align-self-start pt-3">
+                    <div className="d-flex gap-2">
+                        <label className="btn btn wod-button initiative-checkbox mb-2">
+                            <input
+                                type="checkbox"
+                                checked={randomizeInitiative}
+                                onChange={(e) => setRandomizeInitiative(e.target.checked)}
+                                disabled={!buttonEnabled}
+                            />
+                            Randomize Initiative
+                        </label>
+
+                        <button className="btn wod-button mb-2 flex-fill"
+                            onClick={() => navigate('/sessions')}
+                        >
+                            To Sessions
+                        </button>
+                    </div>
+                    
+
                     <ImageSelector selectedImage={selectedImage} backgrounds={backgrounds} onChange={handleBackgroundChange} />
+
+                    <div className="d-flex mt-2">
+                        <button 
+                            className="btn wod-button flex-fill p-4" 
+                            onClick={() => setTurn(turn+1)}
+                            disabled={!buttonEnabled}
+                        >
+                            Next Turn
+                        </button>
+                    </div>
+
+                    {/* Bottom controls */}
+                    <div className="alt-segment-bottom d-flex w-100 gap-2 pb-4">
+                        <button className="btn wod-button wod-border flex-fill"
+                            onClick={() => setMarkCharactersForDeletion(true)}
+                        >
+                            Delete All Characters
+                        </button>
+
+                        <button className="btn wod-button wod-border flex-fill"
+                            onClick={() => setSessionMarkedForDeletion(true)}
+                        >
+                            Delete Session
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>

@@ -8,6 +8,10 @@ export function getSessionById(id){
     return axiosClient.get(`/session/${id}`);
 }
 
+export function getSessionByUserId(){
+    return axiosClient.get(`/session/user`);
+}
+
 export function createSession(request){
     return axiosClient.post('/session', request);
 }

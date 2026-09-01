@@ -1,6 +1,7 @@
 using Backend.Api.Data;
 using Backend.Api.Guards;
 using Backend.Api.Models;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using MongoDB.Driver;
 
 namespace Backend.Api.Services;
@@ -15,6 +16,13 @@ public class SessionService(MongoContext context, IUserContext uContext)
 
     public async Task<Session?> GetAsync(string id) =>
         await _context.Sessions.Find(s => s.Id == id).FirstOrDefaultAsync();
+
+    public async Task<List<Session>> GetByUserIdAsync()
+    {
+        string userId = _userContext.UserId();
+        
+        return await _context.Sessions.Find(s => s.UserId == userId).ToListAsync();
+    }
 
     public async Task<Session> CreateAsync(SessionRequestDto request)
     {
