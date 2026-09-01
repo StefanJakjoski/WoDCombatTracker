@@ -75,7 +75,7 @@ function SessionsLayout({ SessionsArray, onSessionSelect }){
                                             onClick={() => onSessionSelect(session.id)}
                                         >
                                             <img
-                                                src={session.image}
+                                                src={new URL(`../assets/images/${session.imageName}`, import.meta.url)}
                                                 className="session-card-image"
                                                 alt={session.name}
                                             />

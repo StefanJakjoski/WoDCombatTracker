@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import clawmark from '../../assets/images/clawmark.png'
+import clawmark from '../../assets/icons/clawmark.png'
 import background from '../../assets/images/background2.jpg'
 
 import './Sessions.css'
@@ -10,34 +10,9 @@ import { createSession, getAllSessions } from "../../services/sessionService";
 var templateSessions = [
     {
         id: 0,
-        name: "New Session",
-        image: "https://picsum.photos/500/300?random=0",
-    },
-    {
-        id: 1,
-        name: "Encounter 1",
-        image: "https://picsum.photos/500/300?random=1",
-    },
-    {
-        id: 2,
-        name: "Encounter 2",
-        image: "https://picsum.photos/500/300?random=2",
-    },
-    {
-        id: 3,
-        name: "Test Encounter",
-        image: "https://picsum.photos/500/300?random=3",
-    },
-    {
-        id: 4,
-        name: "Technocracy Moon Base",
-        image: "https://picsum.photos/500/300?random=4",
-    },
-    {
-        id: 5,
-        name: "Evening Jackoff Session",
-        image: "https://picsum.photos/500/300?random=5",
-    },
+        name: "Create New Session",
+        imageName: "background0.jpg",
+    }
 ];
 
 

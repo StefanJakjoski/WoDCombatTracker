@@ -3,6 +3,21 @@
   background: url('../../assets/images/background2.jpg') center / cover no-repeat;
 }
 
+.encounter-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: rgba(10, 0, 0, 0.4);
+
+    z-index: 0;
+    pointer-events: none;
+}
+
+.encounter-page > * {
+    position: relative;
+    z-index: 1;
+}
 
 .encounter-title {
     color: brown;

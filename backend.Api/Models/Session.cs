@@ -19,6 +19,8 @@ public class Session
 
     public string Name { get; set; } = "Encounter";
 
+    public string ImageName { get; set; } = "background2.jpg";
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
@@ -27,4 +29,5 @@ public class Session
 public class SessionRequestDto{
     public string Name { get; set; } = "Encounter";
     public List<string> AllowedUserIds { get; set; } = [];
+    public string ImageName { get; set; } = "background2.jpg";
 }

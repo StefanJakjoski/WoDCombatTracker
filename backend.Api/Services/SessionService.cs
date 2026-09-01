@@ -43,6 +43,7 @@ public class SessionService(MongoContext context, IUserContext uContext)
         var update = Builders<Session>.Update
             .Set(s => s.AllowedUserIds, session.AllowedUserIds)
             .Set(s => s.Name, session.Name)
+            .Set(s => s.ImageName, session.ImageName)
             .Set(s => s.UpdatedAt, DateTime.UtcNow);
 
         var options = new FindOneAndUpdateOptions<Session>{ ReturnDocument = ReturnDocument.After };

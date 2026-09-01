@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import "./CharacterCard.css";
 
-import wwplaceholder from '../../assets/images/wwplaceholder.png'
+import wwplaceholder from '../../assets/icons/wwplaceholder.png'
 import Descriptor from "../descriptor/Descriptor";
 import { Damage, DamageType, dealDamageToCharacterById, healDamageToCharacterById } from "../../services/characterService";
 
@@ -290,7 +290,7 @@ export default function CharacterCombatCard({
             <div className="col-4 name">
                 <input
                     type="text"
-                    className="fs-3 fw-bold text-light input-transparent 
+                    className="fs-3 fw-bold text-light input-transparent wod-font
                         input-limited text-uppercase f-aldrich-regular my-1"
                     value={tempName}
                     name="name"

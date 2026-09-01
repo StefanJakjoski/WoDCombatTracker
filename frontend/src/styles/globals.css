@@ -18,3 +18,94 @@ body {
 .unrounded{
     border-radius: 0%;
 }
+
+/* General WoD typography */
+.wod-font {
+    font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* Gothic / atmospheric headings and labels */
+.wod-heading {
+    font-family: Georgia, 'Times New Roman', serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Dramatic text that sits over dark imagery */
+.wod-accent {
+    font-family: Georgia, 'Times New Roman', serif;
+    letter-spacing: 0.08em;
+    text-shadow:
+        1px 1px 2px #000,
+        0 0 5px #000;
+}
+
+
+.wod-button {
+    font-family: Georgia, 'Times New Roman', serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    color: #d6d6d6;
+    background: #111;
+
+    border: 1px solid #4a4a4a;
+    border-radius: 2px;
+
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.8),
+        0 3px 8px rgba(0, 0, 0, 0.6);
+
+    text-shadow:
+        1px 1px 2px #000,
+        0 0 5px #000;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.wod-button:hover {
+    color: #eee;
+
+    background: #181818;
+
+    border-color: #7d1717;
+
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.8),
+        0 3px 10px rgba(0, 0, 0, 0.7),
+        0 0 8px rgba(120, 0, 0, 0.25);
+}
+
+.wod-button:active {
+    background: #0c0c0c;
+
+    border-color: #a32626;
+
+    box-shadow:
+        inset 0 2px 5px rgba(0, 0, 0, 0.8),
+        0 0 5px rgba(120, 0, 0, 0.3);
+}
+
+.wod-button:focus-visible {
+    outline: none;
+
+    border-color: #8d1c1c;
+
+    box-shadow:
+        0 0 0 2px rgba(120, 0, 0, 0.25),
+        0 0 8px rgba(120, 0, 0, 0.3);
+}
+
+.wod-button:disabled {
+    color: #666;
+    background: #0c0c0c;
+    border-color: #292929;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+

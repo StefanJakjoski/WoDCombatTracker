@@ -6,6 +6,7 @@ import CharacterCombatCard from "../../components/characterCards/CharacterCard";
 import { motion, AnimatePresence } from "motion/react"
 
 import "./Encounter.css"
+import ImageSelector from "../../components/imageSelector/ImageSelector";
 
 /*
 Phase description:  0 - initiative roll/random assignment | no sorting, 
@@ -79,9 +80,9 @@ function TurnDescriptor({isActive, phase, assignInit, character, randomizeInitia
 
             <div className={`turn-descriptor ${isActive ? 'active' : 'inactive'}`}>
                 { phase % 3 == 0 && !randomizeInitiative && (
-                    <button className={`btn bg-dark text-light m-2`} 
+                    <button className={`wod-button btn btn-sm bg-dark text-light m-2`} 
                         onClick={() => setTurn(prev => prev+1)}>
-                            Advance Turn
+                            Set Initiative
                     </button>
                 )}
             </div>
@@ -89,15 +90,25 @@ function TurnDescriptor({isActive, phase, assignInit, character, randomizeInitia
     )   
 }
 
-
 function RollD10(){
     return Math.floor(Math.random() * 10) + 1;
+}
+
+function discoverBackgrounds(){
+    const imageModules = import.meta.glob('../../assets/images/*.{jpg,jpeg,png,webp}', 
+        { eager: true, import: 'default', });
+
+    return Object.fromEntries(Object.entries(imageModules).map(([path, image]) => { 
+        const imageName = path.split('/').pop(); 
+        return [imageName, image]; 
+    }));
 }
 
 function Encounter(){
     const { id } = useParams();
 
     const navigate = useNavigate();
+    const backgrounds = discoverBackgrounds();
 
     //for handling
     const [updatingSession, setUpdatingSession] = useState(false);
@@ -106,8 +117,9 @@ function Encounter(){
     const [charactersSorted, setCharactersSorted] = useState(true);
     const [buttonEnabled, setButtonEnabled] = useState(true);
 
-    //title
+    //for session
     const [tempTitle, setTempTitle] = useState('Encounter');
+    const [selectedImage, setSelectedImage] = useState('background2.jpg');
 
     //for turns
     const [adjustingTurn, setAdjustingTurn] = useState(false);
@@ -136,6 +148,7 @@ function Encounter(){
         
         //currentSession = response.data;
         setCurrentSession(response);
+        setSelectedImage(response.imageName ?? 'background2.jpg');
         setTempTitle(response.name ?? 'Encounter');
     }
 
@@ -150,6 +163,13 @@ function Encounter(){
 
         updateSessionById(id, currentSession);
         setUpdatingSession(false);
+    }
+
+    async function handleBackgroundChange(event){
+        const imageName = event.target.value;
+        setSelectedImage(imageName);
+
+        updateSession({ ...currentSession, imageName: imageName });
     }
 
     async function fetchCharactersBySessionId(sessionId){
@@ -403,8 +423,14 @@ function Encounter(){
     * HTML AND RETURN
     ****************************************************************/
     return(
-        <main className="encounter-page">
-            <div className="encounter-title">
+        <main className="encounter-page"
+            style={{
+                minHeight: '100vh', 
+                background: `url("${backgrounds[selectedImage]}") center / cover no-repeat`,
+            }}>
+
+            {/*Session Name and ID*/}
+            <div className="encounter-title wod-heading">
                 <input
                     type="text"
                     className="fs-3 fw-bold text-light input-transparent 
@@ -418,85 +444,127 @@ function Encounter(){
             </div>
 
             <h1 className="encounter-title">{ id ? id : "Hello" }</h1>
-            <button 
-                className="btn btn-primary" 
-                onClick={() => createNewCharacter({
-                    sessionId: id, type: CharacterType.Werewolf,
-                    rage: 5, gnosis: 5, willpower: 5, name: "Lost Soul",
-                    breed: 'Homid', auspice: 'Ahroun', tribe: 'Bonegnawers',
-                    soak: 5, initiative: 5, dodge: 9,
-                    gifts: ['small penis', 'medium penis', 'large penis']
-                })}
-            >
-                CREATE WEREWOLF TEST
-            </button>
-
-            <button 
-                className="btn btn-primary" 
-                onClick={() => createNewCharacter({
-                    sessionId: id, type: CharacterType.Mortal,
-                    willpower: 10, name: "Lost Soul"
-                })}
-            >
-                CREATE MORTAL TEST
-            </button>
-
-            <button 
-                className="btn btn-danger" 
-                onClick={() => deleteAllCharacters(id)}
-            >
-                Delete all characters
-            </button>
-
-            <button 
-                className="btn btn-outline-primary" 
-                onClick={() => setTurn(turn+1)}
-                disabled={!buttonEnabled}
-            >
-                Turn {turn}
-            </button>
-
-            <label className="small text-light">
-                <input
-                    type="checkbox"
-                    checked={randomizeInitiative}
-                    onChange={(e) => setRandomizeInitiative(e.target.checked)}
-                    disabled={!buttonEnabled}
-                />
-                Randomize Initiative
-            </label>
 
 
-            <div className="m-4">
-                {characters.map((character) => (
-                    <motion.div className="d-flex" key={character.id}
-                        layout
-                        transition={{
-                            layout: { duration: 0.3, ease: "easeInOut" }
-                        }}>
-                        <div className="">
-                            <CharacterCombatCard 
-                                character={character}                                
-                                onCharacterChanged={onCharacterChanged}
-                                onInitiativeChanged={onInitiativeChanged}
-                                isActive={character.combatStats.isActive ?? false}
-                            />
+            <div className="row">
+                {/*Character View*/}
+                <div className="col-8">
+
+                    {/*Debug buttons (copy and paste/remake elsewhere later*/}
+                    <button 
+                        className="wod-button p-2" 
+                        onClick={() => createNewCharacter({
+                            sessionId: id, type: CharacterType.Werewolf,
+                            rage: 5, gnosis: 5, willpower: 5, name: "Lost Soul",
+                            breed: 'Homid', auspice: 'Ahroun', tribe: 'Bonegnawers',
+                            soak: 5, initiative: 5, dodge: 9,
+                            gifts: ['small penis', 'medium penis', 'large penis']
+                        })}
+                    >
+                        CREATE WEREWOLF TEST
+                    </button>
+
+                    <button 
+                        className="btn btn-primary" 
+                        onClick={() => createNewCharacter({
+                            sessionId: id, type: CharacterType.Mortal,
+                            willpower: 10, name: "Lost Soul"
+                        })}
+                    >
+                        CREATE MORTAL TEST
+                    </button>
+
+                    <button 
+                        className="btn btn-danger" 
+                        onClick={() => deleteAllCharacters(id)}
+                    >
+                        Delete all characters
+                    </button>
+
+                    <button 
+                        className="btn btn-outline-primary" 
+                        onClick={() => setTurn(turn+1)}
+                        disabled={!buttonEnabled}
+                    >
+                        Turn {turn}
+                    </button>
+
+                    <label className="small text-light">
+                        <input
+                            type="checkbox"
+                            checked={randomizeInitiative}
+                            onChange={(e) => setRandomizeInitiative(e.target.checked)}
+                            disabled={!buttonEnabled}
+                        />
+                        Randomize Initiative
+                    </label>
+
+
+                    {/*Characters*/}
+                    <div className="m-4">
+                        {characters.map((character) => (
+                            <motion.div className="d-flex" key={character.id}
+                                layout
+                                transition={{
+                                    layout: { duration: 0.3, ease: "easeInOut" }
+                                }}>
+                                <div className="">
+                                    <CharacterCombatCard 
+                                        character={character}                                
+                                        onCharacterChanged={onCharacterChanged}
+                                        onInitiativeChanged={onInitiativeChanged}
+                                        isActive={character.combatStats.isActive ?? false}
+                                    />
+                                </div>
+
+                                <button className="wod-button btn text-danger m-2 mx-3"
+                                    onClick={() => deleteCharacter(character.id)}>
+                                    X
+                                </button>
+
+                                <div className="p-4 d-flex align-items-center">
+                                    <TurnDescriptor isActive={character.combatStats.isActive ?? false} phase={phase}
+                                        assignInit={assignInit} character={character} randomizeInitiative={randomizeInitiative}
+                                        setTurn={setTurn}/>
+                                </div>
+                            </motion.div>
+                        ))}
+
+                        {/*Add Character Buttons*/}
+                        <div className="d-flex gap-2 align-items-center">
+                            <button 
+                                className="wod-button p-2" 
+                                onClick={() => createNewCharacter({
+                                    sessionId: id, type: CharacterType.Werewolf,
+                                    rage: 5, gnosis: 5, willpower: 5, name: "Lost Soul",
+                                    breed: 'Homid', auspice: 'Ahroun', tribe: 'Bonegnawers',
+                                    soak: 5, initiative: 5, dodge: 9,
+                                    gifts: ['small penis', 'medium penis', 'large penis']
+                                })}
+                            >
+                                New Werewolf
+                            </button>
+
+                            <button 
+                                className="wod-button p-2" 
+                                onClick={() => createNewCharacter({
+                                    sessionId: id, type: CharacterType.Mortal,
+                                    willpower: 10, name: "Lost Soul"
+                                })}
+                            >
+                                New Mortal
+                            </button>
                         </div>
 
-                        <button className="btn btn-small btn-outline-danger text-danger unrounded m-2"
-                            onClick={() => deleteCharacter(character.id)}>
-                            X
-                        </button>
+                    </div>
+                </div>
 
-                        <div className="p-4 d-flex align-items-center">
-                            <TurnDescriptor isActive={character.combatStats.isActive ?? false} phase={phase}
-                                assignInit={assignInit} character={character} randomizeInitiative={randomizeInitiative}
-                                setTurn={setTurn}/>
-                        </div>
-                    </motion.div>
-                ))}
+
+                {/*Other settings/options*/}
+                <div className="col-4">
+                    <ImageSelector selectedImage={selectedImage} backgrounds={backgrounds} onChange={handleBackgroundChange} />
+                </div>
             </div>
-            
         </main>
     );
 }
