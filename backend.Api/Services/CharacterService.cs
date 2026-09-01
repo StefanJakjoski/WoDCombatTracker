@@ -197,6 +197,8 @@ public class CharacterService(MongoContext context, IUserContext uContext)
             //CharacterType = CharacterTypes.vampire.ToString(),
             CombatStats = new CombatStats(),
             BloodPool = new ResourceTrack(character.BloodPool),
+            Allegiance = character.Allegiance,
+            Clan = character.Clan,
             Powers = character.Powers,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,

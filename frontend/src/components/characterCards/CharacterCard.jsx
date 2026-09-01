@@ -4,7 +4,7 @@ import "./CharacterCard.css";
 
 import wwplaceholder from '../../assets/icons/wwplaceholder.png'
 import Descriptor from "../descriptor/Descriptor";
-import { Damage, DamageType, dealDamageToCharacterById, healDamageToCharacterById } from "../../services/characterService";
+import { CharacterType, Damage, DamageType, dealDamageToCharacterById, healDamageToCharacterById } from "../../services/characterService";
 
 //import PortraitSelector from "./PortraitSelector";
 
@@ -116,6 +116,11 @@ export default function CharacterCombatCard({
                 var r = formatResource(character.gnosis, 'Gnosis', 'primary');
                 resourceArr.push(r);
             }
+        }else if(character.characterType == CharacterType.Vampire){
+            if(character.bloodPool){
+                var r = formatResource(character.bloodPool, 'Blood Pool', 'danger');
+                resourceArr.push(r);
+            }
         }
 
         setResources(resourceArr);
@@ -147,6 +152,7 @@ export default function CharacterCombatCard({
     }
 
     function updateResourcesInCharacter(){
+        console.log(resources);
         resources?.forEach((resource) => {
             switch(resource.name){
                 case 'Willpower':

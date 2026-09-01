@@ -30,6 +30,12 @@ export async function createCharacter(request){
         case 'mortal':
             response = await characterApi.createMortalCharacter(request);
             break;
+        case 'fomor':
+            response = await characterApi.createFomorCharacter(request);
+            break;
+        case 'vampire':
+            response = await characterApi.createVampireCharacter(request);
+            break;
         default:
             response = await characterApi.createMortalCharacter(request);
             break;
@@ -134,5 +140,7 @@ export const DamageType = {
 
 export const CharacterType = { 
     Werewolf: 'werewolf', 
-    Mortal: 'mortal'
+    Mortal: 'mortal',
+    Fomor: 'fomor',
+    Vampire: 'vampire'
 };

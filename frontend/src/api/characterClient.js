@@ -20,6 +20,14 @@ export function createMortalCharacter(request){
     return axiosClient.post('/character/mortal', request);
 }
 
+export function createFomorCharacter(request){
+    return axiosClient.post('/character/fomor', request);
+}
+
+export function createVampireCharacter(request){
+    return axiosClient.post('/character/vampire', request);
+}
+
 export function updateCharacterById(id, request){
     console.log(request);
     return axiosClient.put(`/character/${id}`, request);

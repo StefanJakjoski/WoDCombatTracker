@@ -502,10 +502,33 @@ function Encounter(){
                                 className="wod-button p-2" 
                                 onClick={() => createNewCharacter({
                                     sessionId: id, type: CharacterType.Mortal,
-                                    willpower: 10, name: "Lost Soul"
+                                    willpower: 5, name: "Lost Soul"
                                 })}
                             >
                                 New Mortal
+                            </button>
+
+                            <button 
+                                className="wod-button p-2" 
+                                onClick={() => createNewCharacter({
+                                    sessionId: id, type: CharacterType.Fomor,
+                                    willpower: 5, name: "Lost Soul", bane: "Greed", 
+                                    corruption: "Flaccid skin, pale eyes.",
+                                    powers: ["Hardened Skin", "Fangs"]
+                                })}
+                            >
+                                New Fomor
+                            </button>
+
+                            <button 
+                                className="wod-button p-2" 
+                                onClick={() => createNewCharacter({
+                                    sessionId: id, type: CharacterType.Vampire,
+                                    willpower: 5, bloodPool: 5, name: "Blankbody", 
+                                    powers: ["Dominate", "Celerity"]
+                                })}
+                            >
+                                New Vampire
                             </button>
                         </div>
 

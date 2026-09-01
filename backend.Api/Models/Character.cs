@@ -413,6 +413,8 @@ public class VampireCharacter : Character
     public ResourceTrack BloodPool { get; set; } = new();
 
     public List<string> Powers { get; set; } = [];
+    public string Allegiance { get; set; } = "";
+    public string Clan { get; set; } = "";
 }
 
 
@@ -458,4 +460,7 @@ public class VampireCharacterCreateDto : CharacterCreateDto
     public int BloodPool { get; set; } = 0;
 
     public List<string> Powers { get; set; } = [];
+
+    public string Allegiance { get; set; } = "";
+    public string Clan { get; set; } = "";
 }
