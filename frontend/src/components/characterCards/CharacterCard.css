@@ -29,6 +29,22 @@
 
     z-index: 1;
     overflow: hidden;
+
+    -webkit-mask-image: linear-gradient(
+        to right,
+        black 40%,
+        rgba(0, 0, 0, 0.7) 60%,
+        rgba(0, 0, 0, 0.3) 80%,
+        transparent 100%
+    );
+
+    mask-image: linear-gradient(
+        to right,
+        black 40%,
+        rgba(0, 0, 0, 0.7) 60%,
+        rgba(0, 0, 0, 0.3) 80%,
+        transparent 100%
+    );
 }
 
 .portrait-image img {

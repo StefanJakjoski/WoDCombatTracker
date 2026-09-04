@@ -315,7 +315,7 @@ export default function CharacterCombatCard({
                 <Descriptor character={character} onCharacterChanged={onCharacterChanged} 
                     onOpenChanged={setDescriptorOpen}/>
 
-                <AdditionalCharacterInfo character={character} onCharacterChanged={onCharacterChanged}/>
+                {/*<AdditionalCharacterInfo character={character} onCharacterChanged={onCharacterChanged}/>*/}
             </div>
 
             {/*Resources and Health*/}
@@ -361,7 +361,7 @@ export default function CharacterCombatCard({
                         <button className="w-100 btn btn-sm btn-outline-danger small unrounded" onClick={() => dealDamage(1, DamageType.Aggravated)}>Aggravated</button>
                     </div>
                 </div>
-                <div className="row g-0">
+                <div className="row g-0 mb-3">
                     <div className="col-4">
                         <button className="w-100 btn btn-sm btn-outline-success small unrounded" onClick={() => healDamage(1, DamageType.Bashing)}>Bashing</button>
                     </div>
@@ -372,6 +372,9 @@ export default function CharacterCombatCard({
                         <button className="w-100 btn btn-sm btn-outline-success small unrounded" onClick={() => healDamage(1, DamageType.Aggravated)}>Aggravated</button>
                     </div>
                 </div>
+
+
+                <AdditionalCharacterInfo character={character} onCharacterChanged={onCharacterChanged}/>
             </div>
 
             {/*Combat Stats*/}

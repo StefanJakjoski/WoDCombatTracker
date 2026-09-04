@@ -60,7 +60,7 @@ function PortraitSelector({ character, onCharacterChanged }) {
                     alt={character.name}
                 />
 
-                <div className="portrait-fade" />
+                {/*<div className="portrait-fade" />*/}
             </div>
 
 

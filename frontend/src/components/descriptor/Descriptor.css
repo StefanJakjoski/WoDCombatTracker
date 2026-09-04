@@ -37,7 +37,6 @@
     margin: 0;
 
     color: #f8f9fa;
-    font-family: inherit;
     font-size: inherit;
 
     cursor: pointer;
@@ -76,7 +75,6 @@
     padding: 0;
     margin: 0;
 
-    font-family: inherit;
     font-size: inherit;
     font-weight: inherit;
 
@@ -135,7 +133,6 @@
 
     padding: 0.3rem 0.75rem;
 
-    font-family: inherit;
     font-size: inherit;
 
     white-space: nowrap;
