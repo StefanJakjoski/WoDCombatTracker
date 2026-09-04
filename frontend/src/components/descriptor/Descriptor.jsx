@@ -109,19 +109,19 @@ function DescriptorDropdown({
         >
             <button
                 type="button"
-                className="descriptor-button"
+                className="descriptor-button text-fuzz-5 wod-font"
                 onClick={() => setOpen(prev => !prev)}
             >
                 {displayValue}
             </button>
 
             {open && (
-                <div className="descriptor-menu">
+                <div className="descriptor-menu unrounded wod-border">
                     {options.map(option => (
                         <button
                             key={option}
                             type="button"
-                            className={`descriptor-option ${
+                            className={`descriptor-option wod-font ${
                                 option === value ? "selected" : ""
                             }`}
                             onClick={() => handleSelect(option)}

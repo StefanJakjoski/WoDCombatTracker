@@ -5,6 +5,8 @@
 
     gap: 0.35rem;
 
+    padding-left: 0.5rem;
+
     width: 100%;
 }
 
@@ -109,8 +111,6 @@
     padding: 0.25rem;
 
     background: #17191c;
-    border: 1px solid rgba(255, 193, 7, 0.5);
-    border-radius: 0.25rem;
 
     box-shadow:
         0 0.5rem 1rem rgba(0, 0, 0, 0.5),
