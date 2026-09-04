@@ -513,7 +513,8 @@ function Encounter(){
                                     sessionId: id, type: CharacterType.Fomor,
                                     willpower: 5, name: "Lost Soul", bane: "Greed", 
                                     corruption: "Flaccid skin, pale eyes.",
-                                    powers: ["Hardened Skin", "Fangs"]
+                                    powers: ["Hardened Skin", "Fangs"],
+                                    portraitName: 'fplaceholder.png'
                                 })}
                             >
                                 New Fomor
@@ -524,7 +525,9 @@ function Encounter(){
                                 onClick={() => createNewCharacter({
                                     sessionId: id, type: CharacterType.Vampire,
                                     willpower: 5, bloodPool: 5, name: "Blankbody", 
-                                    powers: ["Dominate", "Celerity"]
+                                    allegiance: 'Camarilla', clan: 'Gangrel',
+                                    powers: ["Dominate", "Celerity"],
+                                    portraitName: 'vplaceholder.png'
                                 })}
                             >
                                 New Vampire

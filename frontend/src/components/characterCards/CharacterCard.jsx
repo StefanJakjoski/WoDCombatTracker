@@ -6,6 +6,7 @@ import wwplaceholder from '../../assets/icons/wwplaceholder.png'
 import Descriptor from "../descriptor/Descriptor";
 import { CharacterType, Damage, DamageType, dealDamageToCharacterById, healDamageToCharacterById } from "../../services/characterService";
 import PortraitSelector from "../portraitSelector/PortraitSelector";
+import AdditionalCharacterInfo from "../additionalCharacterInfo/AdditionalCharacterInfo";
 
 //import PortraitSelector from "./PortraitSelector";
 
@@ -313,6 +314,8 @@ export default function CharacterCombatCard({
 
                 <Descriptor character={character} onCharacterChanged={onCharacterChanged} 
                     onOpenChanged={setDescriptorOpen}/>
+
+                <AdditionalCharacterInfo character={character} onCharacterChanged={onCharacterChanged}/>
             </div>
 
             {/*Resources and Health*/}

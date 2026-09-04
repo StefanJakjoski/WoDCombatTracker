@@ -1,0 +1,18 @@
+.info-container{
+    padding-left: 4rem;
+}
+
+.textarea-limited {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-height: 1.5em;
+    height: auto;
+
+    box-sizing: border-box;
+    overflow: hidden;
+    resize: none;
+
+    /* Make text stand out */
+    text-shadow: 20px rgba(0, 0, 0, 0.9);
+}
