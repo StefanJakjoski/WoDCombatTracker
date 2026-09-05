@@ -33,7 +33,7 @@ function LoginForm(){
 
     return(
         <form onSubmit={handleSubmit}>
-            <div className="mb-3">
+            <div className="mb-3 wod-font">
                 <label htmlFor="login-email" className="form-label">
                     Email Address
                 </label>
@@ -49,7 +49,7 @@ function LoginForm(){
                 />
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 wod-font">
                 <label htmlFor="login-password" className="form-label">
                     Password
                 </label>
@@ -65,7 +65,7 @@ function LoginForm(){
                 />
             </div>
 
-            <button type="submit" className="btn btn-warning btn-lg w-100 unrounded" disabled={loading}>
+            <button type="submit" className="btn wod-button text-danger btn-lg w-100 unrounded" disabled={loading}>
                 {loading ? 'Logging in...' : 'Login'}
             </button>
         </form>

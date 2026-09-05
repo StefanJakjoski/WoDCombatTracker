@@ -50,7 +50,7 @@ function SignupForm(){
 
     return(
         <form onSubmit={handleSubmit}>
-            <div className="mb-3">
+            <div className="mb-3 wod-font">
                 <label htmlFor="signup-name" className="form-label">
                     Name
                 </label>
@@ -66,7 +66,7 @@ function SignupForm(){
                 />
             </div>
 
-            <div className="mb-3">
+            <div className="mb-3 wod-font">
                 <label htmlFor="signup-email" className="form-label">
                     Email address
                 </label>
@@ -82,7 +82,7 @@ function SignupForm(){
                 />
             </div>
 
-            <div className="mb-3">
+            <div className="mb-3 wod-font">
                 <label htmlFor="signup-password" className="form-label">
                     Password
                 </label>
@@ -121,7 +121,7 @@ function SignupForm(){
                 )}
             </div>
 
-            <button type="submit" className="btn btn-warning btn-lg w-100 unrounded"
+            <button type="submit" className="btn wod-button btn-lg text-danger w-100"
                 disabled={ !password || !confirmPassword || password !== confirmPassword || loading }>
                 Create Account
             </button>

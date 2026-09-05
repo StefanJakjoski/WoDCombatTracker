@@ -55,6 +55,17 @@
     animation: bar-upwards-transformation 0.3s ease-out forwards;
 }
 
+
+.session-bar-final{
+    clip-path: polygon(
+        30% 0,
+        80% 0,
+        70% 100%,
+        20% 100%
+    );
+}
+
+
 @keyframes bar-downwards-transformation {
     from {
         clip-path: polygon(

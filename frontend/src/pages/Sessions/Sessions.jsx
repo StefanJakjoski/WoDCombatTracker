@@ -6,7 +6,7 @@ import './Sessions.css'
 import SessionsLayout from "../../layouts/SessionsLayout";
 import { useNavigate } from "react-router-dom";
 import { createSession, getAllSessions, getSessionByUserId } from "../../services/sessionService";
-import { getToken, setToken } from "../../services/authService";
+import { getToken, logout, setToken } from "../../services/authService";
 import NotLoggedInDisplay from "../../components/notLoggedIn/NotLoggedInDisplay";
 
 var templateSessions = [
@@ -28,6 +28,7 @@ function Sessions(){
     const [sessions, setSessions] = useState([]);
 
     const navigate = useNavigate();
+    const animationDurationMs = 300;
     const animationDelayMs = 500;
 
 
@@ -55,7 +56,9 @@ function Sessions(){
         if(token != null){
             setToken(token);
             setIsLoggedIn(true);
-        }    
+        }
+        
+        const animationDurationTimer = setTimeout(() => setLoaded(true), animationDurationMs)
     }, [])
 
     useEffect(() => {
@@ -87,13 +90,37 @@ function Sessions(){
     return(
         <main className="sessions-page"
             style={{ backgroundImage: `url(${background})`}}>
-            <div className="bars">
-                <div className="session-bar session-bar-left" />
-                <div className="session-bar session-bar-right" />
-            </div>
+            
+            {!loaded && (
+                <div className="bars">
+                    <div className="session-bar session-bar-left" />
+                    <div className="session-bar session-bar-right" />
+                </div>
+            )}
 
-            {started && (
-                <SessionsLayout SessionsArray={sessionsArray} onSessionSelect={SelectSession} />
+            {loaded && (
+                <div className="bars">
+                    <div className="session-bar session-bar-final" />
+                </div>
+            )}
+            
+
+            {started && token && (
+                <div>
+                    <button
+                        className="btn wod-button position-fixed bottom-0 end-0 m-3"
+                        style={{zIndex: 1000}}
+                        type="button"
+                        onClick={() => {
+                            logout();
+                            navigate("/login");
+                        }}
+                    >
+                        Log out
+                    </button>
+
+                    <SessionsLayout SessionsArray={sessionsArray} onSessionSelect={SelectSession} />
+                </div>
             )}
 
             {(token == null) && (

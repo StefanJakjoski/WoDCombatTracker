@@ -7,7 +7,7 @@ function AuthLayout({ title, backgroundImage, children }) {
             className="auth-page"
             style={{ backgroundImage: `url(${backgroundImage})` }}
         >
-            <section className="auth-panel">
+            <section className="auth-panel wod-font">
                 <div className="auth-content">
 
                     <Link
