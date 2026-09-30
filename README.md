@@ -1,1 +1,2 @@
-# WTA Combat Tracker
+# WoD Combat Tracker
+Instructions pending...
